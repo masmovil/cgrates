@@ -1,0 +1,2 @@
+#Tenant,ID,Contexts,FilterIDs,ActivationInterval,AttributeFilterIDs,FieldName,Type,Value,Blocker,Weight
+#brand1,ATTR_INTERN,*cdrs,,,,Tenant,*variable,~Account:s/(.*)/$1/,false,0

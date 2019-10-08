@@ -1,0 +1,42 @@
+version: '2.1'
+
+services:
+  redis:
+    container_name: redis
+    image: redis:alpine
+    hostname: redis
+    ports:
+      - "6379:6379"
+
+  postgres:
+    container_name: postgres
+    image: postgres
+    hostname: postgres
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_PASSWORD=mysecretpassword
+      - POSTGRES_DB=cgrates
+    healthcheck:
+      test: [ "CMD", "pg_isready", "-q", "-d", "cgrates", "-U", "postgres" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  cgrates:
+    build: .
+    depends_on:
+      postgres:
+        condition: service_healthy
+    ports:
+      - "2012:2012"
+      - "2013:2013"
+      - "2080:2080"
+    volumes:
+      - ${PWD}/data/conf/cgrates/cgrates.json:/etc/cgrates/cgrates.json
+      - ${PWD}/data/bootstrap:/tmp/data/bootstrap
+    links:
+      - 'redis:redis'
+      - 'postgres:postgres'
+    entrypoint:
+      - ./docker-entrypoint.sh

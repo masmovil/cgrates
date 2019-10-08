@@ -1,0 +1,5 @@
+#Tenant,Account,ActionPlanId,ActionTriggersId,AllowNegative,Disabled
+brand1,34646519350,TARIFF_EXPERT_2_WITH_BONUS_TEAM_100GB,,true,
+brand1,34630735522,TARIFF_EXPERT_2_WITH_BONUS_TEAM_100GB,,true,
+brand2,34600112233,,,true,
+brand2,34600445566,,,true,
