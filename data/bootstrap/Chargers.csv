@@ -1,4 +1,2 @@
 #Tenant,ID,FilterIDs,ActivationInterval,RunID,AttributeIDs,Weight
-brand1,BRAND1,,,*brand1,*none,0
-brand2,BRAND2,,,*brand2,*none,0
 masmovil,MASMOVIL,,,*masmovil,*none,0
