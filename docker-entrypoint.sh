@@ -13,8 +13,8 @@ cgr-migrator -config_path=/etc/cgrates -exec=*set_versions
 echo "-----------------------------------Starting cgr-engine-----------------------------------"
 cgr-engine &
 
+sleep 3
 echo "-----------------------------------Loading bootstrap data-----------------------------------"
-sleep 5
 cgr-loader -config_path=/etc/cgrates -path=/tmp/data/bootstrap -verbose
 
 tail -f /var/log/messages
