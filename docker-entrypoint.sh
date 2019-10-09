@@ -14,7 +14,7 @@ echo "-----------------------------------Starting cgr-engine--------------------
 cgr-engine &
 
 echo "-----------------------------------Loading bootstrap data-----------------------------------"
-sleep 10
+sleep 5
 cgr-loader -config_path=/etc/cgrates -path=/tmp/data/bootstrap -verbose
 
-tail -f /dev/null
+tail -f /var/log/messages
