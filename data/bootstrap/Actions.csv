@@ -2,5 +2,3 @@
 TOPUP_RESET_VOICE_200_ZONE1,*topup_reset,,,,*voice,call,ZONE_1,,,*monthly,,200m,,,,
 TOPUP_RESET_SMS_5000_ZONE1,*topup_reset,,,,*sms,sms,ZONE_1,,,*monthly,,5000,,,,
 TOPUP_RESET_DATA_3GB_ZONE1,*topup_reset,,,,*data,data,ZONE_1,,,*monthly,,3072,,,,
-#DEBIT_EXPERT_2,*debit,,,,*monetary,,,,,*monthly,,11,,,,
-#LOG_SLOWDOWN,*log,,,,,,,,,,,,,,,

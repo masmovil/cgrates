@@ -13,6 +13,9 @@
       "args": [
         "-config_path", "${workspaceRoot}/data/conf/cgrates"
       ],
+      "env": {
+        "PGPASSWORD": "mysecretpassword",
+      },
     },
   ]
 }

@@ -1,9 +1,6 @@
 #! /usr/bin/env sh
 
-export PGPASSWORD="mysecretpassword"
-
 echo "Setup tables"
-
 cd ./data/storage/postgres
 ./setup_cgr_db.sh postgres postgres
 
@@ -17,4 +14,4 @@ sleep 3
 echo "-----------------------------------Loading bootstrap data-----------------------------------"
 cgr-loader -config_path=/etc/cgrates -path=/tmp/data/bootstrap -verbose
 
-tail -f /var/log/messages
+tail -f /dev/null
