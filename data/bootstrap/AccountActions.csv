@@ -1,6 +1,7 @@
 #Tenant,Account,ActionPlanId,ActionTriggersId,AllowNegative,Disabled
 masmovil,646519350,MAS_3GB,,true,false
 masmovil,630735522,MAS_3GB,,true,false
+masmovil,608497392,,,true,false
 masmovil,640377061,,,true,false
 masmovil,676432942,,,true,false
 masmovil,620124834,,,true,false
