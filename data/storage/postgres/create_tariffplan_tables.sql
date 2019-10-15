@@ -183,7 +183,7 @@ CREATE TABLE IF NOT EXISTS tp_action_triggers (
   tag VARCHAR(64) NOT NULL,
   unique_id VARCHAR(64) NOT NULL,
   threshold_type VARCHAR(64) NOT NULL,
-  threshold_value NUMERIC(20,4) NOT NULL,
+  threshold_value NUMERIC(26,10) NOT NULL,
   recurrent BOOLEAN NOT NULL,
   min_sleep VARCHAR(16) NOT NULL,
   expiry_time VARCHAR(26) NOT NULL,

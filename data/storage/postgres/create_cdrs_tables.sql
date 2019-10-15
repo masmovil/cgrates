@@ -21,7 +21,7 @@ CREATE TABLE IF NOT EXISTS cdrs (
   usage BIGINT NOT NULL,
   extra_fields jsonb NOT NULL,
   cost_source VARCHAR(64) NOT NULL,
-  cost NUMERIC(20,4) DEFAULT NULL,
+  cost NUMERIC(26,10) DEFAULT NULL,
   cost_details jsonb,
   extra_info text,
   created_at TIMESTAMP WITH TIME ZONE,
