@@ -97,44 +97,43 @@
     ]				// connections to CDRs for *cdrlog actions <*internal|x.y.z.y:1234>
   },
 
-
-// "cache":{
-// 	"destinations": {"limit": -1, "ttl": "", "static_ttl": false, "precache": false},			// destination caching
-// 	"reverse_destinations": {"limit": -1, "ttl": "", "static_ttl": false, "precache": false},	// reverse destinations index caching
-// 	"rating_plans": {"limit": -1, "ttl": "", "static_ttl": false, "precache": false},			// rating plans caching
-// 	"rating_profiles": {"limit": -1, "ttl": "", "static_ttl": false, "precache": false},		// rating profiles caching
-// 	"actions": {"limit": -1, "ttl": "", "static_ttl": false, "precache": false},				// actions caching
-// 	"action_plans": {"limit": -1, "ttl": "", "static_ttl": false, "precache": false},			// action plans caching
-// 	"account_action_plans": {"limit": -1, "ttl": "", "static_ttl": false, "precache": false},	// account action plans index caching
-// 	"action_triggers": {"limit": -1, "ttl": "", "static_ttl": false, "precache": false},		// action triggers caching
-// 	"shared_groups": {"limit": -1, "ttl": "", "static_ttl": false, "precache": false},			// shared groups caching
-// 	"timings": {"limit": -1, "ttl": "", "static_ttl": false, "precache": false},				// timings caching
-// 	"resource_profiles": {"limit": -1, "ttl": "", "static_ttl": false, "precache": false},		// control resource profiles caching
-// 	"resources": {"limit": -1, "ttl": "", "static_ttl": false, "precache": false},				// control resources caching
-// 	"event_resources": {"limit": -1, "ttl": "", "static_ttl": false},							// matching resources to events
-// 	"statqueue_profiles": {"limit": -1, "ttl": "", "static_ttl": false, "precache": false},		// statqueue profiles
-// 	"statqueues": {"limit": -1, "ttl": "", "static_ttl": false, "precache": false},				// statqueues with metrics
-// 	"threshold_profiles": {"limit": -1, "ttl": "", "static_ttl": false, "precache": false},		// control threshold profiles caching
-// 	"thresholds": {"limit": -1, "ttl": "", "static_ttl": false, "precache": false},				// control thresholds caching
-// 	"filters": {"limit": -1, "ttl": "", "static_ttl": false, "precache": false},				// control filters caching
-// 	"supplier_profiles": {"limit": -1, "ttl": "", "static_ttl": false, "precache": false},		// control supplier profile caching
-// 	"attribute_profiles": {"limit": -1, "ttl": "", "static_ttl": false, "precache": false},		// control attribute profile caching
-// 	"charger_profiles": {"limit": -1, "ttl": "", "static_ttl": false, "precache": false},		// control charger profile caching
-// 	"dispatcher_profiles": {"limit": -1, "ttl": "", "static_ttl": false, "precache": false},	// control dispatcher profile caching
-// 	"dispatcher_hosts": {"limit": -1, "ttl": "", "static_ttl": false, "precache": false},		// control dispatcher hosts caching
-// 	"resource_filter_indexes" : {"limit": -1, "ttl": "", "static_ttl": false}, 					// control resource filter indexes caching
-// 	"stat_filter_indexes" : {"limit": -1, "ttl": "", "static_ttl": false}, 						// control stat filter indexes caching
-// 	"threshold_filter_indexes" : {"limit": -1, "ttl": "", "static_ttl": false}, 				// control threshold filter indexes caching
-// 	"supplier_filter_indexes" : {"limit": -1, "ttl": "", "static_ttl": false}, 					// control supplier filter indexes caching
-// 	"attribute_filter_indexes" : {"limit": -1, "ttl": "", "static_ttl": false}, 				// control attribute filter indexes caching
-// 	"charger_filter_indexes" : {"limit": -1, "ttl": "", "static_ttl": false}, 					// control charger filter indexes caching
-// 	"dispatcher_filter_indexes" : {"limit": -1, "ttl": "", "static_ttl": false}, 				// control dispatcher filter indexes caching
-// 	"dispatcher_routes": {"limit": -1, "ttl": "", "static_ttl": false}, 						// control dispatcher routes caching
-// 	"diameter_messages": {"limit": -1, "ttl": "3h", "static_ttl": false},						// diameter messages caching
-// 	"rpc_responses": {"limit": 0, "ttl": "2s", "static_ttl": false},							// RPC responses caching
-// 	"closed_sessions": {"limit": -1, "ttl": "10s", "static_ttl": false},						// closed sessions cached for CDRs
-// 	"load_ids": {"limit": -1, "ttl": "", "static_ttl": false, "precache": false},				// control the load_ids for items
-// },
+ "cache":{
+ 	"destinations": {"limit": -1, "ttl": "", "static_ttl": false, "precache": true},			// destination caching
+ 	"reverse_destinations": {"limit": -1, "ttl": "", "static_ttl": false, "precache": true},	// reverse destinations index caching
+ 	"rating_plans": {"limit": -1, "ttl": "", "static_ttl": false, "precache": true},			// rating plans caching
+ 	"rating_profiles": {"limit": -1, "ttl": "", "static_ttl": false, "precache": true},		// rating profiles caching
+ 	"actions": {"limit": -1, "ttl": "", "static_ttl": false, "precache": true},				// actions caching
+ 	"action_plans": {"limit": -1, "ttl": "", "static_ttl": false, "precache": true},			// action plans caching
+ 	"account_action_plans": {"limit": -1, "ttl": "", "static_ttl": false, "precache": true},	// account action plans index caching
+ 	"action_triggers": {"limit": -1, "ttl": "", "static_ttl": false, "precache": true},		// action triggers caching
+ 	"shared_groups": {"limit": -1, "ttl": "", "static_ttl": false, "precache": true},			// shared groups caching
+ 	"timings": {"limit": -1, "ttl": "", "static_ttl": false, "precache": true},				// timings caching
+ 	"resource_profiles": {"limit": -1, "ttl": "", "static_ttl": false, "precache": true},		// control resource profiles caching
+ 	"resources": {"limit": -1, "ttl": "", "static_ttl": false, "precache": true},				// control resources caching
+ 	"event_resources": {"limit": -1, "ttl": "", "static_ttl": false},							// matching resources to events
+ 	"statqueue_profiles": {"limit": -1, "ttl": "", "static_ttl": false, "precache": true},		// statqueue profiles
+ 	"statqueues": {"limit": -1, "ttl": "", "static_ttl": false, "precache": true},				// statqueues with metrics
+ 	"threshold_profiles": {"limit": -1, "ttl": "", "static_ttl": false, "precache": true},		// control threshold profiles caching
+ 	"thresholds": {"limit": -1, "ttl": "", "static_ttl": false, "precache": true},				// control thresholds caching
+ 	"filters": {"limit": -1, "ttl": "", "static_ttl": false, "precache": true},				// control filters caching
+ 	"supplier_profiles": {"limit": -1, "ttl": "", "static_ttl": false, "precache": true},		// control supplier profile caching
+ 	"attribute_profiles": {"limit": -1, "ttl": "", "static_ttl": false, "precache": true},		// control attribute profile caching
+ 	"charger_profiles": {"limit": -1, "ttl": "", "static_ttl": false, "precache": true},		// control charger profile caching
+ 	"dispatcher_profiles": {"limit": -1, "ttl": "", "static_ttl": false, "precache": true},	// control dispatcher profile caching
+ 	"dispatcher_hosts": {"limit": -1, "ttl": "", "static_ttl": false, "precache": true},		// control dispatcher hosts caching
+ 	"resource_filter_indexes" : {"limit": -1, "ttl": "", "static_ttl": false}, 					// control resource filter indexes caching
+ 	"stat_filter_indexes" : {"limit": -1, "ttl": "", "static_ttl": false}, 						// control stat filter indexes caching
+ 	"threshold_filter_indexes" : {"limit": -1, "ttl": "", "static_ttl": false}, 				// control threshold filter indexes caching
+ 	"supplier_filter_indexes" : {"limit": -1, "ttl": "", "static_ttl": false}, 					// control supplier filter indexes caching
+ 	"attribute_filter_indexes" : {"limit": -1, "ttl": "", "static_ttl": false}, 				// control attribute filter indexes caching
+ 	"charger_filter_indexes" : {"limit": -1, "ttl": "", "static_ttl": false}, 					// control charger filter indexes caching
+ 	"dispatcher_filter_indexes" : {"limit": -1, "ttl": "", "static_ttl": false}, 				// control dispatcher filter indexes caching
+ 	"dispatcher_routes": {"limit": -1, "ttl": "", "static_ttl": false}, 						// control dispatcher routes caching
+ 	"diameter_messages": {"limit": -1, "ttl": "3h", "static_ttl": false},						// diameter messages caching
+ 	"rpc_responses": {"limit": 0, "ttl": "2s", "static_ttl": false},							// RPC responses caching
+ 	"closed_sessions": {"limit": -1, "ttl": "10s", "static_ttl": false},						// closed sessions cached for CDRs
+ 	"load_ids": {"limit": -1, "ttl": "", "static_ttl": false, "precache": false},				// control the load_ids for items
+ },
 
 
 // "filters": {								// Filters configuration (*new)
@@ -465,10 +464,10 @@
 
   "attributes": {								// AttributeS config
     "enabled": true,						// starts attribute service: <true|false>.
-    "indexed_selects":true,					// enable profile matching exclusively on indexes
+    "indexed_selects": true,					// enable profile matching exclusively on indexes
     //"string_indexed_fields": [],			// query indexes based on these fields for faster processing
-    "prefix_indexed_fields": [],			// query indexes based on these fields for faster processing
-    "process_runs": 1						// number of run loops when processing event
+    "prefix_indexed_fields": ["Subject"],			// query indexes based on these fields for faster processing
+    "process_runs": 10						// number of run loops when processing event
   },
 
 
