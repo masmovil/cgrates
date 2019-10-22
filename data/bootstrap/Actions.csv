@@ -1,4 +1,2 @@
 #ActionsId[0],Action[1],ExtraParameters[2],Filter[3],BalanceId[4],BalanceType[5],Categories[6],DestinationIds[7],RatingSubject[8],SharedGroup[9],ExpiryTime[10],TimingIds[11],Units[12],BalanceWeight[13],BalanceBlocker[14],BalanceDisabled[15],Weight[16]
 TOPUP_RESET_VOICE_200_ZONE1,*topup_reset,,,,*voice,call,ZONE_1,,,*monthly,,200m,,,,
-TOPUP_RESET_SMS_5000_ZONE1,*topup_reset,,,,*sms,sms,ZONE_1,,,*monthly,,5000,,,,
-TOPUP_RESET_DATA_3GB_ZONE1,*topup_reset,,,,*data,data,ZONE_1,,,*monthly,,3072,,,,
