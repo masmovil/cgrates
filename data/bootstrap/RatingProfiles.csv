@@ -1,2 +1,5 @@
 #Tenant,Category,Subject,ActivationTime,RatingPlanId,RatesFallbackSubject
 masmovil,call,ZONE_NATIONAL,2019-01-02T00:00:00Z,CALLS_FROM_ZONE_NATIONAL,
+masmovil,call,ZONE_1,2019-01-02T00:00:00Z,CALLS_FROM_ZONE_1,
+masmovil,call,ZONE_2,2019-01-02T00:00:00Z,CALLS_FROM_ZONE_2,
+masmovil,call,ZONE_3,2019-01-02T00:00:00Z,CALLS_FROM_ZONE_3,
