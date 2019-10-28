@@ -1,0 +1,54 @@
+base:
+  environment: dev
+  basePath: /
+  nameOverride: cgrates
+
+  k8s:
+    service:
+      name: http
+      extraPorts:
+        - name: http-api
+          protocol: TCP
+          internalPort: 2080
+          externalPort: 2080
+        # - name: rpc-json
+        #   protocol: TCP
+        #   internalPort: 2012
+        #   externalPort: 2012
+        # - name: rpc-gob
+        #   protocol: TCP
+        #   internalPort: 2013
+        #   externalPort: 2013
+
+    deployment:
+      resources:
+        limits:
+          cpu: 2000m
+          memory: 300Mi
+        requests:
+          cpu: 1000m
+          memory: 128Mi
+      environment:
+        extraVars:
+          - name: GOOGLE_APPLICATION_CREDENTIALS
+            value: /etc/secrets/google/key.json
+          - name: CONFIG_PATH
+            value: /etc/cgrates
+          - name: POSTGRES_USER
+            valueFrom:
+              secretKeyRef:
+                key: pgsql-user
+                name: pgsql-credentials
+          - name: POSTGRES_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                key: pgsql-password
+                name: pgsql-credentials
+      livenessProbe:
+        httpGet:
+          path: /health
+          port: 2080
+      readinessProbe:
+        httpGet:
+          path: /health
+          port: 2080

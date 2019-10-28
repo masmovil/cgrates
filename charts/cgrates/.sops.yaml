@@ -1,0 +1,2 @@
+creation_rules:
+  - gcp_kms: projects/mm-cloudbuild/locations/europe/keyRings/squads_secrets/cryptoKeys/masbilling_crypto_key

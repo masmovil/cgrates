@@ -22,6 +22,7 @@ import (
 	"bytes"
 	"crypto/tls"
 	"crypto/x509"
+	"encoding/json"
 	"fmt"
 	"io"
 	"io/ioutil"
@@ -40,10 +41,17 @@ import (
 	"golang.org/x/net/websocket"
 )
 
+var healthHandler = func(w http.ResponseWriter, r *http.Request) {
+	body, _ := json.Marshal(map[string]string{"status": "up"})
+	w.Write(body)
+}
+
 func NewServer() (s *Server) {
 	s = new(Server)
 	s.httpMux = http.NewServeMux()
+	s.httpMux.HandleFunc("/health", healthHandler)
 	s.httpsMux = http.NewServeMux()
+	s.httpsMux.HandleFunc("/health", healthHandler)
 	return s
 }
 
