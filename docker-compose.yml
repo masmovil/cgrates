@@ -32,9 +32,13 @@ services:
       - "2012:2012"
       - "2013:2013"
       - "2080:2080"
+    environment:
+      - PGPASSWORD=mysecretpassword
     volumes:
       - ${PWD}/data/conf/cgrates/cgrates.json:/etc/cgrates/cgrates.json
       - ${PWD}/data/bootstrap:/tmp/data/bootstrap
+      - ${PWD}/data/test_cdrs_in:/var/spool/cgrates/cdrc/in
+      - ${PWD}/data/test_cdrs_out:/var/spool/cgrates/cdrc/out
     links:
       - 'redis:redis'
       - 'postgres:postgres'

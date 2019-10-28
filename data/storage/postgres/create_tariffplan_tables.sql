@@ -1,8 +1,8 @@
 --
 -- Table structure for table `tp_timings`
 --
-DROP TABLE IF EXISTS tp_timings;
-CREATE TABLE tp_timings (
+
+CREATE TABLE IF NOT EXISTS tp_timings (
   id SERIAL PRIMARY KEY,
   tpid VARCHAR(64) NOT NULL,
   tag VARCHAR(64) NOT NULL,
@@ -14,15 +14,14 @@ CREATE TABLE tp_timings (
   created_at TIMESTAMP WITH TIME ZONE,
   UNIQUE  (tpid, tag)
 );
-CREATE INDEX tptimings_tpid_idx ON tp_timings (tpid);
-CREATE INDEX tptimings_idx ON tp_timings (tpid,tag);
+CREATE INDEX IF NOT EXISTS tptimings_tpid_idx ON tp_timings (tpid);
+CREATE INDEX IF NOT EXISTS tptimings_idx ON tp_timings (tpid,tag);
 
 --
 -- Table structure for table `tp_destinations`
 --
 
-DROP TABLE IF EXISTS tp_destinations;
-CREATE TABLE tp_destinations (
+CREATE TABLE IF NOT EXISTS tp_destinations (
   id SERIAL PRIMARY KEY,
   tpid VARCHAR(64) NOT NULL,
   tag VARCHAR(64) NOT NULL,
@@ -30,35 +29,33 @@ CREATE TABLE tp_destinations (
   created_at TIMESTAMP WITH TIME ZONE,
   UNIQUE (tpid, tag, prefix)
 );
-CREATE INDEX tpdests_tpid_idx ON tp_destinations (tpid);
-CREATE INDEX tpdests_idx ON tp_destinations (tpid,tag);
+CREATE INDEX IF NOT EXISTS tpdests_tpid_idx ON tp_destinations (tpid);
+CREATE INDEX IF NOT EXISTS tpdests_idx ON tp_destinations (tpid,tag);
 
 --
 -- Table structure for table `tp_rates`
 --
 
-DROP TABLE IF EXISTS tp_rates;
-CREATE TABLE tp_rates (
+CREATE TABLE IF NOT EXISTS tp_rates (
   id SERIAL PRIMARY KEY,
   tpid VARCHAR(64) NOT NULL,
   tag VARCHAR(64) NOT NULL,
-  connect_fee NUMERIC(7,4) NOT NULL,
-  rate NUMERIC(10,4) NOT NULL,
+  connect_fee NUMERIC(10,7) NOT NULL,
+  rate NUMERIC(14,7) NOT NULL,
   rate_unit VARCHAR(16) NOT NULL,
   rate_increment VARCHAR(16) NOT NULL,
   group_interval_start VARCHAR(16) NOT NULL,
   created_at TIMESTAMP WITH TIME ZONE,
   UNIQUE (tpid, tag, group_interval_start)
 );
-CREATE INDEX tprates_tpid_idx ON tp_rates (tpid);
-CREATE INDEX tprates_idx ON tp_rates (tpid,tag);
+CREATE INDEX IF NOT EXISTS tprates_tpid_idx ON tp_rates (tpid);
+CREATE INDEX IF NOT EXISTS tprates_idx ON tp_rates (tpid,tag);
 
 --
 -- Table structure for table `destination_rates`
 --
 
-DROP TABLE IF EXISTS tp_destination_rates;
-CREATE TABLE tp_destination_rates (
+CREATE TABLE IF NOT EXISTS tp_destination_rates (
   id SERIAL PRIMARY KEY,
   tpid VARCHAR(64) NOT NULL,
   tag VARCHAR(64) NOT NULL,
@@ -66,20 +63,19 @@ CREATE TABLE tp_destination_rates (
   rates_tag VARCHAR(64) NOT NULL,
   rounding_method VARCHAR(255) NOT NULL,
   rounding_decimals SMALLINT NOT NULL,
-  max_cost NUMERIC(7,4) NOT NULL,
+  max_cost NUMERIC(10,7) NOT NULL,
   max_cost_strategy VARCHAR(16) NOT NULL,
   created_at TIMESTAMP WITH TIME ZONE,
   UNIQUE (tpid, tag , destinations_tag)
 );
-CREATE INDEX tpdestrates_tpid_idx ON tp_destination_rates (tpid);
-CREATE INDEX tpdestrates_idx ON tp_destination_rates (tpid,tag);
+CREATE INDEX IF NOT EXISTS tpdestrates_tpid_idx ON tp_destination_rates (tpid);
+CREATE INDEX IF NOT EXISTS tpdestrates_idx ON tp_destination_rates (tpid,tag);
 
 --
 -- Table structure for table `tp_rating_plans`
 --
 
-DROP TABLE IF EXISTS tp_rating_plans;
-CREATE TABLE tp_rating_plans (
+CREATE TABLE IF NOT EXISTS tp_rating_plans (
   id SERIAL PRIMARY KEY,
   tpid VARCHAR(64) NOT NULL,
   tag VARCHAR(64) NOT NULL,
@@ -89,16 +85,15 @@ CREATE TABLE tp_rating_plans (
   created_at TIMESTAMP WITH TIME ZONE,
   UNIQUE (tpid, tag, destrates_tag, timing_tag)
 );
-CREATE INDEX tpratingplans_tpid_idx ON tp_rating_plans (tpid);
-CREATE INDEX tpratingplans_idx ON tp_rating_plans (tpid,tag);
+CREATE INDEX IF NOT EXISTS tpratingplans_tpid_idx ON tp_rating_plans (tpid);
+CREATE INDEX IF NOT EXISTS tpratingplans_idx ON tp_rating_plans (tpid,tag);
 
 
 --
 -- Table structure for table `tp_rate_profiles`
 --
 
-DROP TABLE IF EXISTS tp_rating_profiles;
-CREATE TABLE tp_rating_profiles (
+CREATE TABLE IF NOT EXISTS tp_rating_profiles (
   id SERIAL PRIMARY KEY,
   tpid VARCHAR(64) NOT NULL,
   loadid VARCHAR(64) NOT NULL,
@@ -111,15 +106,14 @@ CREATE TABLE tp_rating_profiles (
   created_at TIMESTAMP WITH TIME ZONE,
   UNIQUE (tpid, loadid, tenant, category, subject, activation_time)
 );
-CREATE INDEX tpratingprofiles_tpid_idx ON tp_rating_profiles (tpid);
-CREATE INDEX tpratingprofiles_idx ON tp_rating_profiles (tpid,loadid,tenant,category,subject);
+CREATE INDEX IF NOT EXISTS tpratingprofiles_tpid_idx ON tp_rating_profiles (tpid);
+CREATE INDEX IF NOT EXISTS tpratingprofiles_idx ON tp_rating_profiles (tpid,loadid,tenant,category,subject);
 
 --
 -- Table structure for table `tp_shared_groups`
 --
 
-DROP TABLE IF EXISTS tp_shared_groups;
-CREATE TABLE tp_shared_groups (
+CREATE TABLE IF NOT EXISTS tp_shared_groups (
   id SERIAL PRIMARY KEY,
   tpid VARCHAR(64) NOT NULL,
   tag VARCHAR(64) NOT NULL,
@@ -129,15 +123,14 @@ CREATE TABLE tp_shared_groups (
   created_at TIMESTAMP WITH TIME ZONE,
   UNIQUE (tpid, tag, account , strategy , rating_subject)
 );
-CREATE INDEX tpsharedgroups_tpid_idx ON tp_shared_groups (tpid);
-CREATE INDEX tpsharedgroups_idx ON tp_shared_groups (tpid,tag);
+CREATE INDEX IF NOT EXISTS tpsharedgroups_tpid_idx ON tp_shared_groups (tpid);
+CREATE INDEX IF NOT EXISTS tpsharedgroups_idx ON tp_shared_groups (tpid,tag);
 
 --
 -- Table structure for table `tp_actions`
 --
 
-DROP TABLE IF EXISTS tp_actions;
-CREATE TABLE tp_actions (
+CREATE TABLE IF NOT EXISTS tp_actions (
   id SERIAL PRIMARY KEY,
   tpid VARCHAR(64) NOT NULL,
   tag VARCHAR(64) NOT NULL,
@@ -160,15 +153,14 @@ CREATE TABLE tp_actions (
   created_at TIMESTAMP WITH TIME ZONE,
   UNIQUE (tpid, tag, action, balance_tag, balance_type, expiry_time, timing_tags, destination_tags, shared_groups, balance_weight, weight)
 );
-CREATE INDEX tpactions_tpid_idx ON tp_actions (tpid);
-CREATE INDEX tpactions_idx ON tp_actions (tpid,tag);
+CREATE INDEX IF NOT EXISTS tpactions_tpid_idx ON tp_actions (tpid);
+CREATE INDEX IF NOT EXISTS tpactions_idx ON tp_actions (tpid,tag);
 
 --
 -- Table structure for table `tp_action_timings`
 --
 
-DROP TABLE IF EXISTS tp_action_plans;
-CREATE TABLE tp_action_plans (
+CREATE TABLE IF NOT EXISTS tp_action_plans (
   id SERIAL PRIMARY KEY,
   tpid VARCHAR(64) NOT NULL,
   tag VARCHAR(64) NOT NULL,
@@ -178,21 +170,20 @@ CREATE TABLE tp_action_plans (
   created_at TIMESTAMP WITH TIME ZONE,
   UNIQUE  (tpid, tag, actions_tag, timing_tag)
 );
-CREATE INDEX tpactionplans_tpid_idx ON tp_action_plans (tpid);
-CREATE INDEX tpactionplans_idx ON tp_action_plans (tpid,tag);
+CREATE INDEX IF NOT EXISTS tpactionplans_tpid_idx ON tp_action_plans (tpid);
+CREATE INDEX IF NOT EXISTS tpactionplans_idx ON tp_action_plans (tpid,tag);
 
 --
 -- Table structure for table tp_action_triggers
 --
 
-DROP TABLE IF EXISTS tp_action_triggers;
-CREATE TABLE tp_action_triggers (
+CREATE TABLE IF NOT EXISTS tp_action_triggers (
   id SERIAL PRIMARY KEY,
   tpid VARCHAR(64) NOT NULL,
   tag VARCHAR(64) NOT NULL,
   unique_id VARCHAR(64) NOT NULL,
   threshold_type VARCHAR(64) NOT NULL,
-  threshold_value NUMERIC(20,4) NOT NULL,
+  threshold_value NUMERIC(23,7) NOT NULL,
   recurrent BOOLEAN NOT NULL,
   min_sleep VARCHAR(16) NOT NULL,
   expiry_time VARCHAR(26) NOT NULL,
@@ -213,15 +204,14 @@ CREATE TABLE tp_action_triggers (
   created_at TIMESTAMP WITH TIME ZONE,
   UNIQUE (tpid, tag, balance_tag, balance_type, threshold_type, threshold_value, balance_destination_tags, actions_tag)
 );
-CREATE INDEX tpactiontrigers_tpid_idx ON tp_action_triggers (tpid);
-CREATE INDEX tpactiontrigers_idx ON tp_action_triggers (tpid,tag);
+CREATE INDEX IF NOT EXISTS tpactiontrigers_tpid_idx ON tp_action_triggers (tpid);
+CREATE INDEX IF NOT EXISTS tpactiontrigers_idx ON tp_action_triggers (tpid,tag);
 
 --
 -- Table structure for table tp_account_actions
 --
 
-DROP TABLE IF EXISTS tp_account_actions;
-CREATE TABLE tp_account_actions (
+CREATE TABLE IF NOT EXISTS tp_account_actions (
   id SERIAL PRIMARY KEY,
   tpid VARCHAR(64) NOT NULL,
   loadid VARCHAR(64) NOT NULL,
@@ -234,16 +224,15 @@ CREATE TABLE tp_account_actions (
   created_at TIMESTAMP WITH TIME ZONE,
   UNIQUE (tpid, loadid, tenant, account)
 );
-CREATE INDEX tpaccountactions_tpid_idx ON tp_account_actions (tpid);
-CREATE INDEX tpaccountactions_idx ON tp_account_actions (tpid,loadid,tenant,account);
+CREATE INDEX IF NOT EXISTS tpaccountactions_tpid_idx ON tp_account_actions (tpid);
+CREATE INDEX IF NOT EXISTS tpaccountactions_idx ON tp_account_actions (tpid,loadid,tenant,account);
 
 
 --
 -- Table structure for table `tp_resources`
 --
 
-DROP TABLE IF EXISTS tp_resources;
-CREATE TABLE tp_resources (
+CREATE TABLE IF NOT EXISTS tp_resources (
   "pk" SERIAL PRIMARY KEY,
   "tpid" varchar(64) NOT NULL,
   "tenant"varchar(64) NOT NULL,
@@ -259,16 +248,15 @@ CREATE TABLE tp_resources (
   "threshold_ids" varchar(64) NOT NULL,
   "created_at" TIMESTAMP WITH TIME ZONE
 );
-CREATE INDEX tp_resources_idx ON tp_resources (tpid);
-CREATE INDEX tp_resources_unique ON tp_resources  ("tpid",  "tenant", "id", "filter_ids");
+CREATE INDEX IF NOT EXISTS tp_resources_idx ON tp_resources (tpid);
+CREATE INDEX IF NOT EXISTS tp_resources_unique ON tp_resources  ("tpid",  "tenant", "id", "filter_ids");
 
 
 --
 -- Table structure for table `tp_stats`
 --
 
-DROP TABLE IF EXISTS tp_stats;
-CREATE TABLE tp_stats (
+CREATE TABLE IF NOT EXISTS tp_stats (
   "pk" SERIAL PRIMARY KEY,
   "tpid" varchar(64) NOT NULL,
   "tenant"varchar(64) NOT NULL,
@@ -286,15 +274,14 @@ CREATE TABLE tp_stats (
   "threshold_ids" varchar(64) NOT NULL,
   "created_at" TIMESTAMP WITH TIME ZONE
 );
-CREATE INDEX tp_stats_idx ON tp_stats (tpid);
-CREATE INDEX tp_stats_unique ON tp_stats  ("tpid","tenant", "id", "filter_ids","metric_ids");
+CREATE INDEX IF NOT EXISTS tp_stats_idx ON tp_stats (tpid);
+CREATE INDEX IF NOT EXISTS tp_stats_unique ON tp_stats  ("tpid","tenant", "id", "filter_ids","metric_ids");
 
 --
 -- Table structure for table `tp_threshold_cfgs`
 --
 
-DROP TABLE IF EXISTS tp_thresholds;
-CREATE TABLE tp_thresholds (
+CREATE TABLE IF NOT EXISTS tp_thresholds (
   "pk" SERIAL PRIMARY KEY,
   "tpid" varchar(64) NOT NULL,
   "tenant"varchar(64) NOT NULL,
@@ -310,15 +297,14 @@ CREATE TABLE tp_thresholds (
   "async" BOOLEAN NOT NULL,
   "created_at" TIMESTAMP WITH TIME ZONE
 );
-CREATE INDEX tp_thresholds_idx ON tp_thresholds (tpid);
-CREATE INDEX tp_thresholds_unique ON tp_thresholds  ("tpid","tenant", "id","filter_ids","action_ids");
+CREATE INDEX IF NOT EXISTS tp_thresholds_idx ON tp_thresholds (tpid);
+CREATE INDEX IF NOT EXISTS tp_thresholds_unique ON tp_thresholds  ("tpid","tenant", "id","filter_ids","action_ids");
 
 --
 -- Table structure for table `tp_filter`
 --
 
-DROP TABLE IF EXISTS tp_filters;
-CREATE TABLE tp_filters (
+CREATE TABLE IF NOT EXISTS tp_filters (
   "pk" SERIAL PRIMARY KEY,
   "tpid" varchar(64) NOT NULL,
   "tenant" varchar(64) NOT NULL,
@@ -329,15 +315,14 @@ CREATE TABLE tp_filters (
   "activation_interval" varchar(64) NOT NULL,
   "created_at" TIMESTAMP WITH TIME ZONE
 );
-  CREATE INDEX tp_filters_idx ON tp_filters (tpid);
-  CREATE INDEX tp_filters_unique ON tp_filters  ("tpid","tenant", "id", "filter_type", "filter_field_name");
+  CREATE INDEX IF NOT EXISTS tp_filters_idx ON tp_filters (tpid);
+  CREATE INDEX IF NOT EXISTS tp_filters_unique ON tp_filters  ("tpid","tenant", "id", "filter_type", "filter_field_name");
 
 --
 -- Table structure for table `tp_suppliers`
 --
 
-DROP TABLE IF EXISTS tp_suppliers;
-CREATE TABLE tp_suppliers (
+CREATE TABLE IF NOT EXISTS tp_suppliers (
   "pk" SERIAL PRIMARY KEY,
   "tpid" varchar(64) NOT NULL,
   "tenant"varchar(64) NOT NULL,
@@ -358,8 +343,8 @@ CREATE TABLE tp_suppliers (
   "weight" decimal(8,2) NOT NULL,
   "created_at" TIMESTAMP WITH TIME ZONE
 );
-CREATE INDEX tp_suppliers_idx ON tp_suppliers (tpid);
-CREATE INDEX tp_suppliers_unique ON tp_suppliers  ("tpid",  "tenant", "id",
+CREATE INDEX IF NOT EXISTS tp_suppliers_idx ON tp_suppliers (tpid);
+CREATE INDEX IF NOT EXISTS tp_suppliers_unique ON tp_suppliers  ("tpid",  "tenant", "id",
   "filter_ids","supplier_id","supplier_filter_ids","supplier_account_ids",
   "supplier_ratingplan_ids","supplier_resource_ids","supplier_stat_ids");
 
@@ -367,8 +352,7 @@ CREATE INDEX tp_suppliers_unique ON tp_suppliers  ("tpid",  "tenant", "id",
   -- Table structure for table `tp_attributes`
   --
 
-  DROP TABLE IF EXISTS tp_attributes;
-  CREATE TABLE tp_attributes (
+  CREATE TABLE IF NOT EXISTS tp_attributes (
     "pk" SERIAL PRIMARY KEY,
     "tpid" varchar(64) NOT NULL,
     "tenant"varchar(64) NOT NULL,
@@ -384,16 +368,15 @@ CREATE INDEX tp_suppliers_unique ON tp_suppliers  ("tpid",  "tenant", "id",
     "weight" decimal(8,2) NOT NULL,
     "created_at" TIMESTAMP WITH TIME ZONE
   );
-  CREATE INDEX tp_attributes_ids ON tp_attributes (tpid);
-  CREATE INDEX tp_attributes_unique ON tp_attributes  ("tpid",  "tenant", "id",
+  CREATE INDEX IF NOT EXISTS tp_attributes_ids ON tp_attributes (tpid);
+  CREATE INDEX IF NOT EXISTS tp_attributes_unique ON tp_attributes  ("tpid",  "tenant", "id",
     "filter_ids","field_name","value");
 
   --
   -- Table structure for table `tp_chargers`
   --
 
-  DROP TABLE IF EXISTS tp_chargers;
-  CREATE TABLE tp_chargers (
+  CREATE TABLE IF NOT EXISTS tp_chargers (
     "pk" SERIAL PRIMARY KEY,
     "tpid" varchar(64) NOT NULL,
     "tenant"varchar(64) NOT NULL,
@@ -405,16 +388,15 @@ CREATE INDEX tp_suppliers_unique ON tp_suppliers  ("tpid",  "tenant", "id",
     "weight" decimal(8,2) NOT NULL,
     "created_at" TIMESTAMP WITH TIME ZONE
   );
-  CREATE INDEX tp_chargers_ids ON tp_chargers (tpid);
-  CREATE INDEX tp_chargers_unique ON tp_chargers  ("tpid",  "tenant", "id",
+  CREATE INDEX IF NOT EXISTS tp_chargers_ids ON tp_chargers (tpid);
+  CREATE INDEX IF NOT EXISTS tp_chargers_unique ON tp_chargers  ("tpid",  "tenant", "id",
     "filter_ids","run_id","attribute_ids");
 
   --
   -- Table structure for table `tp_dispatchers`
   --
 
-  DROP TABLE IF EXISTS tp_dispatcher_profiles;
-  CREATE TABLE tp_dispatcher_profiles (
+  CREATE TABLE IF NOT EXISTS tp_dispatcher_profiles (
   "pk" SERIAL PRIMARY KEY,
   "tpid" varchar(64) NOT NULL,
   "tenant" varchar(64) NOT NULL,
@@ -432,16 +414,15 @@ CREATE INDEX tp_suppliers_unique ON tp_suppliers  ("tpid",  "tenant", "id",
   "weight" decimal(8,2) NOT NULL,
   "created_at" TIMESTAMP WITH TIME ZONE
   );
-  CREATE INDEX tp_dispatcher_profiles_ids ON tp_dispatcher_profiles (tpid);
-  CREATE INDEX tp_dispatcher_profiles_unique ON tp_dispatcher_profiles  ("tpid",  "tenant", "id",
+  CREATE INDEX IF NOT EXISTS tp_dispatcher_profiles_ids ON tp_dispatcher_profiles (tpid);
+  CREATE INDEX IF NOT EXISTS tp_dispatcher_profiles_unique ON tp_dispatcher_profiles  ("tpid",  "tenant", "id",
     "filter_ids","strategy","conn_id","conn_filter_ids");
 
 --
 -- Table structure for table `tp_dispatchers`
 --
 
-  DROP TABLE IF EXISTS tp_dispatcher_hosts;
-  CREATE TABLE tp_dispatcher_hosts (
+  CREATE TABLE IF NOT EXISTS tp_dispatcher_hosts (
   "pk" SERIAL PRIMARY KEY,
   "tpid" varchar(64) NOT NULL,
   "tenant" varchar(64) NOT NULL,
@@ -451,16 +432,15 @@ CREATE INDEX tp_suppliers_unique ON tp_suppliers  ("tpid",  "tenant", "id",
   "tls" BOOLEAN NOT NULL,
   "created_at" TIMESTAMP WITH TIME ZONE
   );
-  CREATE INDEX tp_dispatchers_hosts_ids ON tp_dispatcher_hosts (tpid);
-  CREATE INDEX tp_dispatcher_hosts_unique ON tp_dispatcher_hosts  ("tpid",  "tenant", "id",
+  CREATE INDEX IF NOT EXISTS tp_dispatchers_hosts_ids ON tp_dispatcher_hosts (tpid);
+  CREATE INDEX IF NOT EXISTS tp_dispatcher_hosts_unique ON tp_dispatcher_hosts  ("tpid",  "tenant", "id",
     "address");
 
 --
 -- Table structure for table `versions`
 --
 
-DROP TABLE IF EXISTS versions;
-CREATE TABLE versions (
+CREATE TABLE IF NOT EXISTS versions (
   "id" SERIAL PRIMARY KEY,
   "item" varchar(64) NOT NULL,
   "version" INTEGER NOT NULL,
