@@ -1,14 +1,14 @@
 pipeline {
   agent none
   environment {
-      KUBERNETES_SERVICE_NAME = "mas-billing"
+      KUBERNETES_SERVICE_NAME = "masbilling"
   }
   stages {
     stage('Testing') {
       agent {
         docker {
           label 'docker'
-          image 'eu.gcr.io/mm-cloudbuild/builders/go-alpine'
+          image 'golang:1.13.1'
         }
       }
       stages {
@@ -16,7 +16,6 @@ pipeline {
           steps {
             checkout scm
             sh '''#!/bin/bash
-            source ./context/env.sh
             make unit-test
             '''
           }
@@ -35,7 +34,7 @@ pipeline {
           steps {
             sh '''
             mkdir -p ./context ./deployment
-            gsutil -m cp -r 'gs://cloudbuild-contexts/mas-billing/*' ./context
+            gsutil -m cp -r 'gs://cloudbuild-contexts/masbilling/*' ./context
             gsutil -m cp -r 'gs://continuous-deployment-scripts/deployment/*' ./deployment
             chmod +x ./deployment/*.sh
             '''
