@@ -25,10 +25,6 @@ $(BIN_NAME): $(shell find . -name "*.go")
 .PHONY: build
 build: $(BIN_NAME)
 
-.PHONY: migrate
-migrate:
-	go run main.go migrate up
-
 .PHONY: run
 run: build
 	./$(BIN_NAME)
