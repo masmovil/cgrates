@@ -9,6 +9,7 @@ RUN groupadd -g 1004 -o jenkins && \
 
 ARG CLOUD_SDK_VERSION=261.0.0
 ENV CLOUD_SDK_VERSION=$CLOUD_SDK_VERSION
+ENV GOPATH=/go
 
 RUN export CLOUD_SDK_REPO="cloud-sdk-$(lsb_release -c -s)" && \
     echo "deb https://packages.cloud.google.com/apt $CLOUD_SDK_REPO main" > /etc/apt/sources.list.d/google-cloud-sdk.list && \
@@ -24,4 +25,4 @@ RUN export CLOUD_SDK_REPO="cloud-sdk-$(lsb_release -c -s)" && \
     gcloud --version
 
 COPY entrypoint.sh /entrypoint.sh
-ENTRYPOINT ["/entrypoint.sh"]
+ENTRYPOINT ["sh", "entrypoint.sh"]
