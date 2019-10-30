@@ -4,37 +4,19 @@ pipeline {
         KUBERNETES_SERVICE_NAME = "masbilling"
     }
     stages {
-        stage('Build Docker images') {
-            // when { anyOf { changeset "ci/docker/**/*";  triggeredBy cause: "UserIdCause" } }
-            agent {
-                label 'docker'
-            }
-            steps {
-                checkout scm
-                sh 'ls -la'
-                sh 'docker build -t eu.gcr.io/mm-cloudbuild/masbilling:jenkins -f ./ci/Dockerfile ./ci'
-                sh '/snap/bin/gcloud auth configure-docker --quiet'
-                sh 'docker push eu.gcr.io/mm-cloudbuild/masbilling:jenkins'
-            }
-        }
         stage('Testing') {
             agent {
                 docker {
                     label 'docker'
-                    image 'eu.gcr.io/mm-cloudbuild/masbilling:jenkins'
+                    image 'eu.gcr.io/mm-cloudbuild/authn:jenkins'
+                    args '-v /home/jenkins/.cache:/home/jenkins/.cache'
                 }
             }
             stages {
                 stage('Unit Tests') {
                     steps {
-                        sh 'echo "Antes del checkout"'
                         checkout scm
-                        sh 'echo "Holaaaaaaaaaaaa"'
-                        sh '''#!/bin/bash
-                        echo "Estoy dentro del sh"
-                        make unit-test
-                        '''
-                        sh 'echo "Adiooooooooooos"'
+                        sh 'make unit-test'
                     }
                 }
             }
@@ -43,7 +25,8 @@ pipeline {
             agent {
                 docker {
                     label 'docker'
-                    image 'eu.gcr.io/mm-cloudbuild/masbilling:jenkins'
+                    image 'eu.gcr.io/mm-cloudbuild/authn:jenkins'
+                    args '-v /home/jenkins/.cache:/home/jenkins/.cache'
                 }
             }
             stages {
@@ -79,7 +62,8 @@ pipeline {
             agent {
                 docker {
                     label 'docker'
-                    image 'eu.gcr.io/mm-cloudbuild/masbilling:jenkins'
+                    image 'eu.gcr.io/mm-cloudbuild/authn:jenkins'
+                    args '-v /home/jenkins/.cache:/home/jenkins/.cache'
                 }
             }
             stages {
