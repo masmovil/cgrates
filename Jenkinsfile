@@ -27,8 +27,14 @@ pipeline {
             stages {
                 stage('Unit Tests') {
                     steps {
+                        sh 'echo "Antes del checkout"'
                         checkout scm
-                        sh 'make unit-test'
+                        sh 'echo "Holaaaaaaaaaaaa"'
+                        sh '''#!/bin/bash
+                        echo "Estoy dentro del sh"
+                        make unit-test
+                        '''
+                        sh 'echo "Adiooooooooooos"'
                     }
                 }
             }
