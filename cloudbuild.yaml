@@ -1,0 +1,178 @@
+substitutions:
+  _CONTEXT: masbilling
+  _KUBERNETES_SERVICE_NAME: cgrates
+  _GOPATH: /workspace/src/masbilling/.cache/go
+  _DEVELOPMENT_BRANCH_REGEX: "^(feature|ft|hotfix|hf|userstory|us).*"
+  _REPO_NAME: cgrates
+
+options:
+  substitution_option: 'ALLOW_LOOSE'
+  machineType: N1_HIGHCPU_8
+  env:
+      - 'BUILD=$BUILD_ID'
+      - 'BUILD_ID=$BUILD_ID'
+      - 'PROJECT=$PROJECT_ID'
+      - 'REPO_NAME=$_REPO_NAME'
+      - 'BRANCH_NAME=$BRANCH_NAME'
+      - 'FULL_BRANCH_NAME=$BRANCH_NAME'
+      - 'TAG_NAME=$TAG_NAME'
+      - 'COMMIT_SHA=$COMMIT_SHA'
+      - 'CI_GOOGLE_CLOUD=true'
+      - 'REV=$REVISION_ID'
+      - 'KUBERNETES_SERVICE_NAME=$_KUBERNETES_SERVICE_NAME'
+      - 'HELM_CHART_PROJECT_PATH=charts/$_KUBERNETES_SERVICE_NAME'
+      - 'HELM_RELEASE_NAME=$_KUBERNETES_SERVICE_NAME'
+      - 'DEPLOYMENT=/deployment'
+      - 'GOPATH=$_GOPATH'
+tags: ['dev', 'go', 'masbilling', "$_REPO_NAME"]
+timeout: 1800s
+
+steps:
+
+  # The Context step pulls a series of folders with scripts that are
+  # used in the following steps to set an environment and to automatically
+  # deploy de application in Kubernetes depending on its name, the branch
+  # that is being built and other parameters.
+  - id: Context
+    name: 'gcr.io/cloud-builders/gsutil'
+    volumes:
+      - name: 'context'
+        path: '/context'
+      - name: 'deployment-scripts'
+        path: '/deployment'
+    entrypoint: /bin/bash
+    args:
+      - '-c'
+      - |
+        gsutil -m cp -r 'gs://cloudbuild-contexts/$_CONTEXT/*' /context/
+        gsutil -m cp -r 'gs://continuous-deployment-scripts/deployment/*' /deployment/
+        chmod +x /deployment/*.sh
+
+  # Cache is stored in GCS in tar format (no compression)
+  # Inside the .tar there is a '.cache' directory which is unarchived in /workspace/src/authn/.cache
+  # Then other steps may use files in here
+  - name: gcr.io/cloud-builders/gsutil
+    id: Fetch Cache
+    entrypoint: /bin/bash
+    args:
+      - '-c'
+      - |
+        # Generate tar with go pkg files as cache
+        set -x
+        mkdir -p .cache/go # Ensure it exists
+        gsutil cp gs://mm-cloudbuild_cloudbuild/cache/$REPO_NAME/${REPO_NAME}-cache.tar cache.tar
+        tar xf cache.tar
+        rm -f cache.tar
+        echo "Fetch cache end"
+
+  - name: 'gcr.io/mm-cloudbuild/go'
+    id: Unit tests
+    volumes:
+      - name: 'context'
+        path: '/context'
+      - name: 'deployment-scripts'
+        path: '/deployment'
+    entrypoint: /bin/bash
+    env:
+      - 'GOPATH=$_GOPATH'
+    args:
+      - '-c'
+      - |
+          source /context/env.sh
+          source /deployment/env.sh
+          source /deployment/deployment-helper.sh
+          github_check_cloudbuild "unit_tests" "pending" "Executing unit tests"
+          make unit-test
+          if [ $? -ne 0 ] ; then
+            github_check_cloudbuild "unit_tests" "failure" "Unit tests failed"
+            exit 1
+          else
+            github_check_cloudbuild "unit_tests" "success" "Unit tests succeeded"
+          fi
+
+  - name: 'gcr.io/mmdh-dev/circleci:docker-18-perl'
+    id: Build Docker image
+    volumes:
+      - name: 'deployment-scripts'
+        path: '/deployment'
+      - name: 'context'
+        path: '/context'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+          source /context/env.sh
+          source /deployment/env.sh
+          source /deployment/deployment-helper.sh
+          github_check_cloudbuild "docker_image" "pending" "Building Docker Image"
+          make build-docker-image
+          if [ $? -ne 0 ] ; then
+            github_check_cloudbuild "docker_image" "failure" "Build Docker Image failed"
+            exit 1
+          else
+            github_check_cloudbuild "docker_image" "success" "Build Docker Image succeeded"
+          fi
+
+  - name: gcr.io/cloud-builders/gsutil
+    id: Save Cache
+    entrypoint: /bin/bash
+    args:
+      - '-c'
+      - |
+        # Generate tar with .cache dir
+        tar cf ${REPO_NAME}-cache.tar .cache
+        gsutil cp ${REPO_NAME}-cache.tar gs://mm-cloudbuild_cloudbuild/cache/$REPO_NAME/
+
+  - name: 'gcr.io/mmdh-dev/circleci:docker-18-perl'
+    id: Push Docker image
+    volumes:
+      - name: 'deployment-scripts'
+        path: '/deployment'
+      - name: 'context'
+        path: '/context'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+          source /context/env.sh
+          source /deployment/env.sh
+          source /deployment/deployment-helper.sh
+          github_check_cloudbuild "push_docker_image" "pending" "Pushing docker image"
+          make push-docker-image
+          if [ $? -ne 0 ] ; then
+            github_check_cloudbuild "push_docker_image" "failure" "Pushing docker image failed"
+            exit 1
+          else
+            github_check_cloudbuild "push_docker_image" "success" "Pushing docker image succeeded"
+          fi
+
+  - name: 'eu.gcr.io/mmdh-dev/circleci:docker-18-perl'
+    id: K8s Deployment
+    volumes:
+      - name: 'deployment-scripts'
+        path: '/deployment'
+      - name: 'context'
+        path: '/context'
+    entrypoint: 'bash'
+
+    args:
+      - '-c'
+      - |
+          source /context/env.sh
+          source /deployment/deployment-helper.sh
+          github_check_cloudbuild "k8s_deployment" "pending" "Deployment to K8S"
+          if [ "$TAG_NAME" != "" ]; then
+            /deployment/helm-push.sh
+          else
+            # Only deploy directly development branches
+            if [[ "$BRANCH_NAME" =~ $_DEVELOPMENT_BRANCH_REGEX ]]; then
+              make deploy
+            fi
+          fi
+
+          if [ $? -ne 0 ] ; then
+            github_check_cloudbuild "k8s_deployment" "failure" "Deployment to K8S failed"
+            exit 1
+          else
+            github_check_cloudbuild "k8s_deployment" "success" "Deployment to K8S succeeded"
+          fi

@@ -1,5 +1,0 @@
-#!/bin/bash
-
-set -Eeo pipefail
-
-exec "$@"
