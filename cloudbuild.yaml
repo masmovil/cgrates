@@ -1,7 +1,7 @@
 substitutions:
-  _CONTEXT: masbilling
+  _CONTEXT: mas-billing
   _KUBERNETES_SERVICE_NAME: cgrates
-  _GOPATH: /workspace/src/masbilling/.cache/go
+  _GOPATH: /workspace/src/mas-billing/.cache/go
   _DEVELOPMENT_BRANCH_REGEX: "^(feature|ft|hotfix|hf|userstory|us).*"
   _REPO_NAME: cgrates
 
@@ -24,7 +24,7 @@ options:
       - 'HELM_RELEASE_NAME=$_KUBERNETES_SERVICE_NAME'
       - 'DEPLOYMENT=/deployment'
       - 'GOPATH=$_GOPATH'
-tags: ['dev', 'go', 'masbilling', "$_REPO_NAME"]
+tags: ['dev', 'go', 'mas-billing', "$_REPO_NAME"]
 timeout: 1800s
 
 steps:

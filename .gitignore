@@ -3,6 +3,7 @@ a.out
 *.6
 *.pyc
 *~
+*.backup
 .DS_Store
 .settings
 *project
