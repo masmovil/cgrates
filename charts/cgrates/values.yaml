@@ -20,6 +20,12 @@ base:
         #   internalPort: 2013
         #   externalPort: 2013
 
+    externalnames:
+      - name: postgres
+        address: 10.192.0.234
+      - name: redis
+        address: 10.192.128.123
+
     deployment:
       resources:
         limits:
