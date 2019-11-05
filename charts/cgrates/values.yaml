@@ -40,16 +40,6 @@ base:
             value: /etc/secrets/google/key.json
           - name: CONFIG_PATH
             value: /etc/cgrates
-          - name: POSTGRES_USER
-            valueFrom:
-              secretKeyRef:
-                key: pgsql-user
-                name: pgsql-credentials
-          - name: POSTGRES_PASSWORD
-            valueFrom:
-              secretKeyRef:
-                key: pgsql-password
-                name: pgsql-credentials
       livenessProbe:
         httpGet:
           path: /health
