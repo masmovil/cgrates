@@ -1,0 +1,12 @@
+FROM golang:1.13.1
+COPY . /app
+WORKDIR /app
+RUN go build -ldflags  "-w -s -X 'github.com/cgrates/cgrates/utils.GitLastLog=${GIT_LAST_LOG}'" -o cgr-migrator github.com/cgrates/cgrates/cmd/cgr-migrator
+RUN go build -ldflags  "-w -s -X 'github.com/cgrates/cgrates/utils.GitLastLog=${GIT_LAST_LOG}'" -o cgr-loader github.com/cgrates/cgrates/cmd/cgr-loader
+
+FROM frolvlad/alpine-glibc
+RUN apk --no-cache add ca-certificates postgresql-client
+COPY --from=0 /app/cgr-migrator /app/cgr-migrator
+COPY --from=0 /app/cgr-loader /app/cgr-loader
+WORKDIR /app
+CMD [ "./cgr-migrator" ]
