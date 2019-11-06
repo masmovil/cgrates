@@ -11,11 +11,16 @@ if [ -z "$2" ]; then
 	host="localhost"
 fi
 
+database=$3
+if [ -z "$3" ]; then
+	database="cgrates"
+fi
+
 DIR="$(dirname "$(readlink -f "$0")")"
 
-psql -U $user -h $host -d cgrates -f "$DIR"/create_cdrs_tables.sql
+psql -U $user -h $host -d $database -f "$DIR"/create_cdrs_tables.sql
 cdrt=$?
-psql -U $user -h $host -d cgrates -f "$DIR"/create_tariffplan_tables.sql
+psql -U $user -h $host -d $database -f "$DIR"/create_tariffplan_tables.sql
 tpt=$?
 
 if [ $cdrt = 0 ] && [ $tpt = 0 ]; then
