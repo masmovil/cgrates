@@ -31,6 +31,7 @@ import (
 	"syscall"
 	"time"
 
+	"cloud.google.com/go/profiler"
 	"github.com/cgrates/cgrates/agents"
 	"github.com/cgrates/cgrates/analyzers"
 	v1 "github.com/cgrates/cgrates/apier/v1"
@@ -943,6 +944,22 @@ func startAnalyzerService(internalAnalyzerSChan chan rpcclient.RpcClientConnecti
 	internalAnalyzerSChan <- aSv1
 }
 
+// initProfiler initializes the GCloud Stackdriver Profiler with the options defined in the configuration.
+// The profiler analyzes the amount of CPU time and memory used by every call in the code.
+func initProfiler() {
+	err := profiler.Start(profiler.Config{
+		Service:        utils.CGRATES,
+		ServiceVersion: utils.VERSION,
+		ProjectID:      os.Getenv("GCLOUD_PROJECT_ID"),
+	})
+
+	if err != nil {
+		utils.Logger.Warning(fmt.Sprintf("<%s> could not init, error: %s", utils.Profiler, err.Error()))
+	} else {
+		utils.Logger.Info(fmt.Sprintf("<%s> is enabled.", utils.Profiler))
+	}
+}
+
 // initCacheS inits the CacheS and starts precaching as well as populating internal channel for RPC conns
 func initCacheS(internalCacheSChan chan rpcclient.RpcClientConnection,
 	server *utils.Server, dm *engine.DataManager, exitChan chan bool) (chS *engine.CacheS) {
@@ -1367,6 +1384,8 @@ func main() {
 	internalCoreSv1Chan := make(chan rpcclient.RpcClientConnection, 1)
 	internalRALsv1Chan := make(chan rpcclient.RpcClientConnection, 1)
 
+	// init Profiler
+	initProfiler()
 	// init CacheS
 	cacheS := initCacheS(internalCacheSChan, server, dm, exitChan)
 

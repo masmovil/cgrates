@@ -604,6 +604,7 @@ const (
 	ChargerS    = "ChargerS"
 	CacheS      = "CacheS"
 	AnalyzerS   = "AnalyzerS"
+	Profiler	= "Profiler"
 )
 
 // Lower service names
